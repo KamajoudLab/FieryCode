@@ -2,27 +2,24 @@
 <html>
 <head>
 <title>FieryPatient</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
+<div class="container">
+	<h1>Register</h1>
+	<form action="" method="post">
+		<label>Username</label> 
+		<input type="text" name="username" id="username" autofocus/>
+		<label>Password </label>
+		<input type="password" name="password" id="password"/><br/>
+		<label>FirstName</label> 
+		<input type="text" name="firstname" id="firstname" autofocus/>
+		<label>LastName</label> 
+		<input type="text" name="lastname" id="lastname" autofocus/>
 
-<h1>Login</h1>
-
-
- <form action="" method="post">
- 
-	<label>Username</label> 
-	<input type="text" name="username" id="username" autofocus/>
-	<label>Password </label>
-	<input type="password" name="password" id="password"/><br/>
-	<label>FirstName</label> 
-	<input type="text" name="firstname" id="firstname" autofocus/>
-	<label>LastName</label> 
-	<input type="text" name="lastname" id="lastname" autofocus/>
-	
-	<input type="submit" class="button" value="Register"/> 
-			
- </form>	
-
+		<input type="submit" class="button" value="Register"/> 
+	</form>	
+</div>
 </body>
 </html>
 
