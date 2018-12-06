@@ -14,6 +14,7 @@
 	<input type="password" placeholder="Enter Password" name="psw" required>
 
 	<input type="submit" class="button" value="Login"/> 
+	<span><a href="./register.php">register</a></span>
 </div>
 </body>
 </html>

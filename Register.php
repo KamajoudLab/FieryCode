@@ -17,7 +17,8 @@
 		<label>LastName</label> 
 		<input type="text" name="lastname" id="lastname" autofocus/>
 
-		<input type="submit" class="button" value="Register"/> 
+		<input type="submit" class="button" value="Register"/>
+		<span><a href="./login.php">login</a></span>
 	</form>	
 </div>
 </body>
