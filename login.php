@@ -13,7 +13,6 @@ if( isset( $_POST['login'] ) ) {
 	$conn = $db->Connect();
 	
 	if(!$stmt = $conn->prepare("SELECT * FROM `users` WHERE UserName=? AND Password=?;")){
-	var_dump($stmt);
 		echo 'binding error';
 	}
 	
@@ -24,17 +23,17 @@ if( isset( $_POST['login'] ) ) {
 	if (!$stmt->execute()) {
 	   echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 	}
+	
 	$result = $stmt->get_result();
 	
 	if($result->num_rows == 1){
 		//user found
-		session_start();
+		if (session_status() == PHP_SESSION_NONE) {
+			session_start();
+		}
 		while($row = $result->fetch_assoc()) {
-			var_dump($row);
 			$_SESSION['User'] = $row;
 		}
-	}else{
-		die("user not found");
 	}
 	
 	$stmt->close();
@@ -42,14 +41,16 @@ if( isset( $_POST['login'] ) ) {
 	
 	//redirect
 	if(isset($_SESSION['User'])){
-		header( "Location: index.php" );
+		if($_SESSION['User']['IsDoctor']){
+			header( "Location: doctor.php" );
+		} else {
+			header( "Location: patient.php" );
+		}
 		exit;
 	}
 }
 
 ?>
-
-<?php if(!isset( $_POST[ 'Login' ] )) :?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,4 +73,3 @@ if( isset( $_POST['login'] ) ) {
 </div>
 </body>
 </html>
-<?php endif; ?>
