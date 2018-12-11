@@ -51,6 +51,7 @@ if(isset($_SESSION['User'])){
 </head>
 <body>
 <div class="container">
+	<span><a href="./logout.php">loguit</a></span>
 	<h1>patient dossier</h1>
 	<?php if(isset($patient)):?>
 		<ul>
