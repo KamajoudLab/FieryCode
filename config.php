@@ -1,0 +1,3 @@
+<?php
+$databasekey = "test";
+?>
