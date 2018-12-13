@@ -19,7 +19,7 @@ if(isset($_SESSION['User'])){
 				$db = new Database();
 				$conn = $db->Connect();
 
-				$stmt = $conn->prepare("INSERT INTO patientfile (Date, Topic, Diagnose, Medicine, PatientId, DoctorId) VALUES ( NOW(), ?, ?, ?, ?, ?);");
+				$stmt = $conn->prepare("INSERT INTO patientfile (Date, Topic, Diagnose, Medicine, PatientId, DoctorId) VALUES ( NOW(), AES_ENCRYPT(?,UNHEX('F3229A0B371ED2D9441B830D21A390C3')), ?, ?, ?, ?);");
 
 				// set parameters and execute				
 				$Topic = $_POST["Topic"];
