@@ -6,15 +6,15 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if(isset($_SESSION['User'])){
-	if(isset($_SESSION['User']['IsDoctor']){
+	if(isset($_SESSION['User']['IsDoctor'])){
 		//check user
 		$id = $_SESSION['User']['Id'];
 		$db = new Database();
 		$conn = $db->Connect();
 		
+		//doc data
 		if(!$stmt = $conn->prepare("SELECT * FROM `doctors` WHERE `UserId` = ?")){
 			echo 'binding error';
-			 echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 		}
 		
 		if(!$stmt->bind_param('i', $id)){
@@ -28,9 +28,26 @@ if(isset($_SESSION['User'])){
 		$result = $stmt->get_result();
 		
 		if($result->num_rows == 1){
-			//user found
 			while($row = $result->fetch_assoc()) {
 				$doc = $row;
+			}
+		}
+		
+		//patient select 
+		if(!$stmt = $conn->prepare("SELECT * FROM `patients`")){
+			echo 'prepare fail patients';
+		}
+
+		if (!$stmt->execute()) {
+		   echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+		}
+		
+		$result = $stmt->get_result();
+		
+		if($result->num_rows >= 1){
+			$patients = array();
+			while($row = $result->fetch_assoc()) {
+				array_push($patients, $row);
 			}
 		}
 		
@@ -60,6 +77,19 @@ if(isset($_SESSION['User'])){
 			<li>achternaam: <?php echo $doc['Lastname'] ?></li>
 			<li>functie: <?php echo $doc['Funtion'] ?></li>
 		</ul>
+	<?php endif;?>
+	
+	<h3>Patienten</h3>
+	<?php if(isset($patients)):?>
+		<?php foreach($patients as $p):?>
+		<ul>
+			<li>
+				<a href="./insertPatient.php?id=<?php echo $p['Id'];?>">
+					<?php echo $p['Firstname'] . ' ' . $p['Lastname']; ?>
+				</a>
+			</li>
+		</ul>
+		<?php endforeach;?>
 	<?php endif;?>
 </div>
 </body>

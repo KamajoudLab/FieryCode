@@ -1,5 +1,6 @@
 <?php
 class Database {
+	//plaats in config file
 	protected $servername = "localhost";
 	protected $username = "root";
 	protected $password = "";

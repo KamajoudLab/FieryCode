@@ -11,9 +11,9 @@ if(isset($_SESSION['User'])){
 	$db = new Database();
 	$conn = $db->Connect();
 	
+	//patient data
 	if(!$stmt = $conn->prepare("SELECT * FROM `patients` WHERE `UserId` = ?")){
-		echo 'binding error';
-		 echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+		echo 'sql error';
 	}
 	
 	if(!$stmt->bind_param('i', $id)){
@@ -30,6 +30,37 @@ if(isset($_SESSION['User'])){
 		//user found
 		while($row = $result->fetch_assoc()) {
 			$patient = $row;
+			//add session info
+			$patient['FirstName'] = $_SESSION['User']['FirstName'];
+			$patient['LastName'] = $_SESSION['User']['LastName'];
+		}
+	} else{
+		echo 'patient niet gevonden';
+	}
+	
+	if(isset($patient)){
+		//patient file
+		if(!$stmt = $conn->prepare("SELECT * FROM `patientfile` WHERE `PatientId` = ?")){
+			echo 'sql error';
+		}
+		
+		if(!$stmt->bind_param('i', $patient['Id'])){
+			echo "binding failed";
+		}
+
+		if (!$stmt->execute()) {
+		   echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+		}
+		
+		$result2 = $stmt->get_result();
+		
+		if($result2->num_rows >= 1){
+			$patientFile = array();
+			while($row = $result2->fetch_assoc()) {
+				array_push($patientFile, $row);
+			}
+		} else{
+			echo 'patient file niet gevonden';
 		}
 	}
 	
@@ -53,13 +84,33 @@ if(isset($_SESSION['User'])){
 <div class="container">
 	<span><a href="./logout.php">loguit</a></span>
 	<h1>patient dossier</h1>
+	<h3>Gegevens</h3>
 	<?php if(isset($patient)):?>
 		<ul>
-			<li>voornaam: <?php echo $patient['Firstname'] ?></li>
-			<li>achternaam: <?php echo $patient['Lastname'] ?></li>
-			<li>geboorte: <?php echo $patient['Birth'] ?></li>
-			<li>geslacht: <?php echo $patient['Gender'] ?></li>
+			<li>voornaam: <?php echo $patient['FirstName']; ?></li>
+			<li>achternaam: <?php echo $patient['FirstName']; ?></li>
+			<li>geboorte: <?php echo $patient['Birth']; ?></li>
+			<li>geslacht: <?php echo $patient['Gender']; ?></li>
 		</ul>
+	<?php endif;?>
+	<hr>
+	<h3>Dossier</h3>
+	<table>
+  <tr>
+    <th>Datum</th>
+    <th>Onderwerp</th>
+    <th>Diagnose</th>
+    <th>Medicijn</th>
+  </tr>
+	<?php if(isset($patientFile)):?>
+		<?php foreach($patientFile as $a):?>
+		<tr>
+			<td><?php echo $a['Date']; ?></td>
+			<td><?php echo $a['Topic']; ?></td>
+			<td><?php echo $a['Diagnose']; ?></td>
+			<td><?php echo $a['Medicine']; ?></td>
+		</tr>
+		<?php endforeach;?>
 	<?php endif;?>
 </div>
 </body>
