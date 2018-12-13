@@ -163,6 +163,11 @@ if(isset($_SESSION['User'])){
 	</table>
 	<?php if($_SESSION['User']['IsDoctor'] == true):?>
 		<span><a href="./doctor.php">terug naar patienten</a></span>
+		<div>
+			<a href="./insertpatient.php?id=<?php echo $_GET['id']?>">
+				Voeg file toe
+			</a>
+		</div>
 	<?php endif;?>
 	
 </div>
