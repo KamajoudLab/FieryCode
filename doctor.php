@@ -33,9 +33,13 @@ if(isset($_SESSION['User'])){
 			}
 		}
 		
-		//patient select 
-		if(!$stmt = $conn->prepare("SELECT * FROM `patients`")){
+		//patients select 
+		if(!$stmt = $conn->prepare("SELECT * FROM `patients` WHERE `DoctorId` = ?")){
 			echo 'prepare fail patients';
+		}
+		
+		if(!$stmt->bind_param('i', $id)){
+			echo "binding failed";
 		}
 
 		if (!$stmt->execute()) {

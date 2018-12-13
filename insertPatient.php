@@ -6,7 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if(isset($_SESSION['User'])){
-	if(isset($_SESSION['User']['IsDoctor'])){
+	if($_SESSION['User']['IsDoctor'] == true){
 		//check user
 		$db = new Database();
 		$conn = $db->Connect();
@@ -40,8 +40,6 @@ if(isset($_SESSION['User'])){
 
 				$stmt->close();
 				$conn->close();
-				
-				
 		}
 	}
 }else {
