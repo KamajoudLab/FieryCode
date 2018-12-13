@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Gegenereerd op: 11 dec 2018 om 14:15
--- Serverversie: 5.7.23
--- PHP-versie: 7.2.10
+-- Generation Time: Dec 13, 2018 at 02:53 PM
+-- Server version: 5.7.23
+-- PHP Version: 7.2.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,13 +21,11 @@ SET time_zone = "+00:00";
 --
 -- Database: `fierypatientdb`
 --
-CREATE DATABASE IF NOT EXISTS `fierypatientdb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `fierypatientdb`;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `doctors`
+-- Table structure for table `doctors`
 --
 
 DROP TABLE IF EXISTS `doctors`;
@@ -42,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `doctors` (
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
--- Gegevens worden geëxporteerd voor tabel `doctors`
+-- Dumping data for table `doctors`
 --
 
 INSERT INTO `doctors` (`ID`, `Firstname`, `Lastname`, `Funtion`, `UserId`) VALUES
@@ -52,7 +50,7 @@ INSERT INTO `doctors` (`ID`, `Firstname`, `Lastname`, `Funtion`, `UserId`) VALUE
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `patientfile`
+-- Table structure for table `patientfile`
 --
 
 DROP TABLE IF EXISTS `patientfile`;
@@ -68,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `patientfile` (
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
--- Gegevens worden geëxporteerd voor tabel `patientfile`
+-- Dumping data for table `patientfile`
 --
 
 INSERT INTO `patientfile` (`Id`, `Date`, `Topic`, `Diagnose`, `Medicine`, `PatientId`, `DoctorId`) VALUES
@@ -78,7 +76,7 @@ INSERT INTO `patientfile` (`Id`, `Date`, `Topic`, `Diagnose`, `Medicine`, `Patie
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `patients`
+-- Table structure for table `patients`
 --
 
 DROP TABLE IF EXISTS `patients`;
@@ -89,22 +87,25 @@ CREATE TABLE IF NOT EXISTS `patients` (
   `Birth` date NOT NULL,
   `Gender` varchar(1) NOT NULL,
   `UserId` int(11) NOT NULL,
+  `DoctorId` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `UserId` (`UserId`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
--- Gegevens worden geëxporteerd voor tabel `patients`
+-- Dumping data for table `patients`
 --
 
-INSERT INTO `patients` (`Id`, `Firstname`, `Lastname`, `Birth`, `Gender`, `UserId`) VALUES
-(1, 'A', 'B', '1995-12-02', '0', 10),
-(2, 'C', 'D', '2000-12-09', '0', 11);
+INSERT INTO `patients` (`Id`, `Firstname`, `Lastname`, `Birth`, `Gender`, `UserId`, `DoctorId`) VALUES
+(1, 'kawtar', 'b', '1995-12-02', '0', 10, NULL),
+(2, 'mari', 'c', '2000-12-09', '0', 11, NULL),
+(3, 'rahiem', 'c', '2000-12-09', '0', 7, 8),
+(4, 'ozan', 'p', '2000-12-09', '0', 6, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `users`
+-- Table structure for table `users`
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -119,16 +120,16 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
--- Gegevens worden geëxporteerd voor tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`Id`, `FirstName`, `LastName`, `UserName`, `Password`, `IsDoctor`) VALUES
-(6, 'ozan', 'palali', 'ozziy', 'test123', 0),
-(7, 'Rahiem', 'a', 'rahiem', 'test123', 0),
-(8, 'doc1', 'a', 'doc1', 'test123', 1),
-(9, 'doc2', 'b', 'doc2', 'test123', 1),
-(10, 'pat1', 'A', 'pat1', 'test123', 0),
-(11, 'pat2', 'B', 'pat2', 'test123', 0);
+(6, 'ozan', 'palali', 'ozziy', 'CA978112CA1BBDCAFAC231B39A23DC4DA786EFF8147C4E72B9807785AFEE48BB', 0),
+(7, 'Rahiem', 'a', 'r', 'CA978112CA1BBDCAFAC231B39A23DC4DA786EFF8147C4E72B9807785AFEE48BB', 0),
+(8, 'doc1', 'a', 'd', 'CA978112CA1BBDCAFAC231B39A23DC4DA786EFF8147C4E72B9807785AFEE48BB', 1),
+(9, 'doc2', 'b', 'doc2', 'CA978112CA1BBDCAFAC231B39A23DC4DA786EFF8147C4E72B9807785AFEE48BB', 1),
+(10, 'pat1', 'A', 'pat1', 'CA978112CA1BBDCAFAC231B39A23DC4DA786EFF8147C4E72B9807785AFEE48BB', 0),
+(11, 'pat2', 'B', 'pat2', 'CA978112CA1BBDCAFAC231B39A23DC4DA786EFF8147C4E72B9807785AFEE48BB', 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -6,7 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if(isset($_SESSION['User'])){
-	if(isset($_SESSION['User']['IsDoctor'])){
+	if($_SESSION['User']['IsDoctor'] == true){
 		//check user
 		$id = $_SESSION['User']['Id'];
 		$db = new Database();
@@ -84,7 +84,7 @@ if(isset($_SESSION['User'])){
 		<?php foreach($patients as $p):?>
 		<ul>
 			<li>
-				<a href="./insertPatient.php?id=<?php echo $p['Id'];?>">
+				<a href="./patient.php?id=<?php echo $p['Id'];?>">
 					<?php echo $p['Firstname'] . ' ' . $p['Lastname']; ?>
 				</a>
 			</li>
