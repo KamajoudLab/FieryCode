@@ -13,7 +13,7 @@ if(isset($_POST["firstname"]) && isset($_POST["lastname"]) && isset($_POST["user
     if(!preg_match("#[a-zA-Z]+#", $_POST['password'])) {
         $passerror .= "Password must include at least one letter!<br>";
     }
-	if(strlen($_POST["username"]) < 10){
+	if(strlen($_POST["username"]) < 6){
 		$passerror .= "Username is too short!<br>";
 	}
 	
@@ -27,7 +27,9 @@ if(isset($_POST["firstname"]) && isset($_POST["lastname"]) && isset($_POST["user
 		$FirstName = $_POST["firstname"];
 		$LastName = $_POST["lastname"];
 		$User = $_POST["username"];
-		$Pass = hash('sha256', $_POST['password']);
+		
+		$Pass = $_POST['password'] . md5($User); // add salt with user name
+		$Pass = hash('sha256', $Pass); //hasing
 
 		if(!$stmt->bind_param("ssss",$FirstName, $LastName, $User, $Pass )){
 			echo "binding failed";
@@ -39,6 +41,9 @@ if(isset($_POST["firstname"]) && isset($_POST["lastname"]) && isset($_POST["user
 
 		$stmt->close();
 		$conn->close();
+		
+		header( "Location: login.php" );
+		exit;
 	}
 }
 

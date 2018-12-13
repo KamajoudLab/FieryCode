@@ -18,28 +18,44 @@ if(isset($_SESSION['User'])){
 				
 				$db = new Database();
 				$conn = $db->Connect();
-
-				$stmt = $conn->prepare("INSERT INTO patientfile (Date, Topic, Diagnose, Medicine, PatientId, DoctorId) VALUES ( NOW(), ?, ?, ?, ?, ?);");
-
-				// set parameters and execute				
-				$Topic = $_POST["Topic"];
-				$Diagnose = $_POST["Diagnose"];
-				$Medicine = $_POST["Medicine"];
+				
+				//check if has rights
+				//get doctorid
 				$PatientId = $_REQUEST["id"];
-				$DoctorId = $_SESSION['User']['Id'];
-
-				if(!$stmt->bind_param("sssii", $Topic, $Diagnose, $Medicine, $PatientId, $DoctorId )){
-					echo "binding failed";
+				
+				$stmt = $conn->prepare("SELECT * FROM `patients` WHERE `Id` = ? limit 1");
+				if(!$stmt->bind_param("i", $PatientId)){ echo "binding failed"; }
+				if (!$stmt->execute()) { echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error; }
+				$result = $stmt->get_result();
+				while($row = $result->fetch_assoc()) {
+					$patient = $row;
 				}
+				
+				if($patient['DoctorId'] == $_SESSION['User']['Id'])
+				{
+					$stmt = $conn->prepare("INSERT INTO patientfile (Date, Topic, Diagnose, Medicine, PatientId, DoctorId) VALUES ( NOW(), ?, ?, ?, ?, ?);");
 
-				if (!$stmt->execute()) {
-				   echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+					// set parameters and execute				
+					$Topic = $_POST["Topic"];
+					$Diagnose = $_POST["Diagnose"];
+					$Medicine = $_POST["Medicine"];
+					$DoctorId = $_SESSION['User']['Id'];
+
+					if(!$stmt->bind_param("sssii", $Topic, $Diagnose, $Medicine, $PatientId, $DoctorId )){
+						echo "binding failed";
+					}
+
+					if (!$stmt->execute()) {
+					   echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+					} else {
+						header( "Location: doctor.php" );
+					}
+
+					$stmt->close();
+					$conn->close();
 				} else {
-					header( "Location: doctor.php" );
+					echo 'dit is niet jouw patient';
 				}
-
-				$stmt->close();
-				$conn->close();
 		}
 	}
 }else {

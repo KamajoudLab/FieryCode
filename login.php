@@ -12,7 +12,8 @@ if( isset( $_POST['login'] ) ) {
 	
 	$pass = $_POST['psw'];
 	$pass = stripslashes($pass);
-	$pass = hash('sha256', $_POST['psw']); //hasing
+	$pass = $pass . md5($user); // add salt with user name
+	$pass = hash('sha256', $pass); //hasing
 	
 	$db = new Database();
 	$conn = $db->Connect();
