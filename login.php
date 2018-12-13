@@ -1,5 +1,10 @@
 <?php
 require_once 'database.php';
+require_once 'config.php';
+
+if (session_status() == PHP_SESSION_NONE) {
+	session_start();
+}
 
 if( isset( $_POST['login'] ) ) {
 	$user = $_POST['uname'];
@@ -28,12 +33,17 @@ if( isset( $_POST['login'] ) ) {
 	
 	if($result->num_rows == 1){
 		//user found
-		if (session_status() == PHP_SESSION_NONE) {
-			session_start();
-		}
 		while($row = $result->fetch_assoc()) {
 			$_SESSION['User'] = $row;
 		}
+		$_SESSION['logintry'] = 0;
+	} else {
+		if(!isset($_SESSION['logintry'])){
+			$_SESSION['logintry'] = 0;
+		}
+		$_SESSION['logintry'] = $_SESSION['logintry'] + 1;
+		sleep($_SESSION['logintry']);
+		echo "login failed " . $_SESSION['logintry'];
 	}
 	
 	$stmt->close();
@@ -59,6 +69,7 @@ if( isset( $_POST['login'] ) ) {
 </head>
 <body>
 <div class="container">
+	<span><a href="./logout.php">loguit</a></span>
 	<h1>Login</h1>
 	<form action="" method="post">
 		<label for="uname"><b>Username</b></label>

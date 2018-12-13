@@ -57,6 +57,7 @@ if(isset($_SESSION['User'])){
 </head>
 <body>
 <div class="container">
+	<span><a href="./logout.php">loguit</a></span>
 	<h1>Patient Info</h1>
 	<form action="" method="post">
 		<label>Topic </label>
