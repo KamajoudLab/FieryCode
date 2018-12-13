@@ -36,7 +36,7 @@ if(isset($_SESSION['User'])){
 		
 		if(isset($patient)){
 			//patient file
-			if(!$stmt = $conn->prepare("SELECT * FROM `patientfile` WHERE `PatientId` = ?")){
+			if(!$stmt = $conn->prepare("SELECT AES_DECRYPT(Topic,UNHEX('F3229A0B371ED2D9441B830D21A390C3')) as 'Topic',Id, Date, Diagnose, Medicine  FROM `patientfile` WHERE `PatientId` = ?")){
 				echo 'sql error';
 			}
 			
@@ -69,6 +69,7 @@ if(isset($_SESSION['User'])){
 			
 			$db = new Database();
 			$conn = $db->Connect();
+			
 			if(!$stmt = $conn->prepare("SELECT * FROM `patients` WHERE `Id` = ? AND `DoctorId` = ?")){
 				echo 'sql error';
 			}
@@ -92,7 +93,7 @@ if(isset($_SESSION['User'])){
 			
 			if(isset($patient)){
 				//patient file
-				if(!$stmt = $conn->prepare("SELECT * FROM `patientfile` WHERE `PatientId` = ?")){
+				if(!$stmt = $conn->prepare("SELECT AES_DECRYPT(Topic,UNHEX('F3229A0B371ED2D9441B830D21A390C3')) as 'Topic',Id, Date, Diagnose, Medicine  FROM `patientfile` WHERE `PatientId` = ?")){
 					echo 'sql error';
 				}
 				

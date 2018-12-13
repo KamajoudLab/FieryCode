@@ -33,13 +33,13 @@ if(isset($_SESSION['User'])){
 				
 				if($patient['DoctorId'] == $_SESSION['User']['Id'])
 				{
-					$stmt = $conn->prepare("INSERT INTO patientfile (Date, Topic, Diagnose, Medicine, PatientId, DoctorId) VALUES ( NOW(), ?, ?, ?, ?, ?);");
-
 					// set parameters and execute				
 					$Topic = $_POST["Topic"];
 					$Diagnose = $_POST["Diagnose"];
 					$Medicine = $_POST["Medicine"];
 					$DoctorId = $_SESSION['User']['Id'];
+					
+					$stmt = $conn->prepare("INSERT INTO patientfile (Date, Topic, Diagnose, Medicine, PatientId, DoctorId) VALUES ( NOW(), AES_ENCRYPT(?,UNHEX('F3229A0B371ED2D9441B830D21A390C3')), ?, ?, ?, ?);");
 
 					if(!$stmt->bind_param("sssii", $Topic, $Diagnose, $Medicine, $PatientId, $DoctorId )){
 						echo "binding failed";
