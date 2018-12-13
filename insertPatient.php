@@ -8,11 +8,13 @@ if (session_status() == PHP_SESSION_NONE) {
 if(isset($_SESSION['User'])){
 	if(isset($_SESSION['User']['IsDoctor'])){
 		//check user
-		$id = $_SESSION['User']['Id'];
 		$db = new Database();
 		$conn = $db->Connect();
 
-		if(isset($_POST["Topic"]) && isset($_POST["Diagnose"]) && isset($_POST["Medicine"]) && isset($_POST["PatientId"]) && isset($_POST["DoctorId"])){
+		if(isset($_POST["Topic"]) && 
+			isset($_POST["Diagnose"]) && 
+			isset($_POST["Medicine"]) && 
+			isset($_REQUEST["id"])){
 				
 				$db = new Database();
 				$conn = $db->Connect();
@@ -23,8 +25,8 @@ if(isset($_SESSION['User'])){
 				$Topic = $_POST["Topic"];
 				$Diagnose = $_POST["Diagnose"];
 				$Medicine = $_POST["Medicine"];
-				$PatientId = $_POST["PatientId"];
-				$DoctorId = $_POST["DoctorId"];
+				$PatientId = $_REQUEST["id"];
+				$DoctorId = $_SESSION['User']['Id'];
 
 				if(!$stmt->bind_param("sssii", $Topic, $Diagnose, $Medicine, $PatientId, $DoctorId )){
 					echo "binding failed";
@@ -32,10 +34,14 @@ if(isset($_SESSION['User'])){
 
 				if (!$stmt->execute()) {
 				   echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+				} else {
+					header( "Location: doctor.php" );
 				}
 
 				$stmt->close();
 				$conn->close();
+				
+				
 		}
 	}
 }else {
@@ -61,14 +67,10 @@ if(isset($_SESSION['User'])){
 		<input type="text" name="Diagnose" id="Diagnose" autofocus/>
 		<label>Medicine</label> 
 		<input type="text" name="Medicine" id="Medicine" autofocus/>
-		<label>PatientId</label> 
-		<input type="number" name="PatientId" id="PatientId" autofocus/>
-		<label>DoctorId</label> 
-		<input type="number" name="DoctorId" id="DoctorId" autofocus/>
 		
 		<input type="submit" class="button" value="Opslaan"/>	
 	</form>	
-	<span><a href="./patient.php">patient</a></span>
+	<span><a href="./patient.php">terug naar patienten</a></span>
 </div>
 </body>
 </html>
