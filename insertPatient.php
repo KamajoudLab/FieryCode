@@ -1,9 +1,12 @@
 <?php
 require_once 'database.php';
+require_once 'config.php';
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+echo $databasekey;
 
 if(isset($_SESSION['User'])){
 	if($_SESSION['User']['IsDoctor'] == true){
@@ -39,7 +42,7 @@ if(isset($_SESSION['User'])){
 					$Medicine = $_POST["Medicine"];
 					$DoctorId = $_SESSION['User']['Id'];
 					
-					$stmt = $conn->prepare("INSERT INTO patientfile (Date, Topic, Diagnose, Medicine, PatientId, DoctorId) VALUES ( NOW(), AES_ENCRYPT(?,UNHEX('F3229A0B371ED2D9441B830D21A390C3')), ?, ?, ?, ?);");
+					$stmt = $conn->prepare("INSERT INTO patientfile (Date, Topic, Diagnose, Medicine, PatientId, DoctorId) VALUES ( NOW(), AES_ENCRYPT(?,UNHEX('$databasekey')), ?, ?, ?, ?);");
 
 					if(!$stmt->bind_param("sssii", $Topic, $Diagnose, $Medicine, $PatientId, $DoctorId )){
 						echo "binding failed";

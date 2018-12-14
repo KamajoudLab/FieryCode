@@ -1,5 +1,6 @@
 <?php
 require_once 'database.php';
+require_once 'config.php';
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -36,7 +37,7 @@ if(isset($_SESSION['User'])){
 		
 		if(isset($patient)){
 			//patient file
-			if(!$stmt = $conn->prepare("SELECT AES_DECRYPT(Topic,UNHEX('F3229A0B371ED2D9441B830D21A390C3')) as 'Topic',Id, Date, Diagnose, Medicine  FROM `patientfile` WHERE `PatientId` = ?")){
+			if(!$stmt = $conn->prepare("SELECT AES_DECRYPT(Topic,UNHEX('$databasekey')) as 'Topic',Id, Date, Diagnose, Medicine  FROM `patientfile` WHERE `PatientId` = ?")){
 				echo 'sql error';
 			}
 			
@@ -93,10 +94,10 @@ if(isset($_SESSION['User'])){
 			
 			if(isset($patient)){
 				//patient file
-				if(!$stmt = $conn->prepare("SELECT AES_DECRYPT(Topic,UNHEX('F3229A0B371ED2D9441B830D21A390C3')) as 'Topic',Id, Date, Diagnose, Medicine  FROM `patientfile` WHERE `PatientId` = ?")){
+				if(!$stmt = $conn->prepare("SELECT AES_DECRYPT(Topic,UNHEX('$databasekey')) as 'Topic',Id, Date, Diagnose, Medicine  FROM `patientfile` WHERE `PatientId` = ?")){
 					echo 'sql error';
 				}
-				
+				//$databasekey
 				if(!$stmt->bind_param('i', $patient['Id'])){
 					echo "binding failed";
 				}
@@ -165,7 +166,7 @@ if(isset($_SESSION['User'])){
 	<?php if($_SESSION['User']['IsDoctor'] == true):?>
 		<span><a href="./doctor.php">terug naar patienten</a></span>
 		<div>
-			<a href="./insertpatient.php?id=<?php echo $patientId; ?>">
+			<a href="./insertpatient.php?id=<?php echo htmlspecialchars($patientId, ENT_QUOTES); ?>">
 				Voeg file toe
 			</a>
 		</div>

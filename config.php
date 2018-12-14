@@ -1,3 +1,3 @@
 <?php
-$databasekey = "test";
+$databasekey = 'F3229A0B371ED2D9441B830D21A390C3';
 ?>
