@@ -6,8 +6,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-echo $databasekey;
-
 if(isset($_SESSION['User'])){
 	if($_SESSION['User']['IsDoctor'] == true){
 		//check user
